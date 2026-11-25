@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Royal Wedding Invitation</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Great+Vibes&family=Playfair+Display:ital,wght@0,600;1,500&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep-maroon: #4A0E17;
+    --royal-crimson: #6E1423;
+    --cream-bg: #FAF3E8;
+    --parchment: #F5E6CC;
+    --royal-gold: #C59B27;
+    --dark-gold: #8C6812;
+    --text-dark: #000000; /* सभी एडिटेबल टेक्स्ट के लिए काला रंग */
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background-color: #1A0508;
+    color: var(--text-dark);
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+  }
+
+  .app-wrapper {
+    max-width: 480px;
+    margin: 0 auto;
+    background-color: var(--cream-bg);
+    min-height: 100vh;
+    position: relative;
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
+    overflow-x: hidden;
+  }
+
+  /* Unlock Screen */
+  #unlock-screen {
+    position: fixed;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100%; max-width: 480px; height: 100%;
+    background: radial-gradient(circle, var(--royal-crimson) 0%, var(--deep-maroon) 100%);
+    z-index: 9999;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    transition: opacity 0.8s ease;
+    padding: 20px;
+  }
+
+  .coin-wrapper {
+    cursor: pointer;
+    animation: floatGlow 3.5s ease-in-out infinite;
+  }
+
+  @keyframes floatGlow {
+    0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 15px rgba(212,175,55,0.6)); }
+    50% { transform: translateY(-12px) scale(1.04); filter: drop-shadow(0 0 28px rgba(255,215,0,0.9)); }
+  }
+
+  .gold-coin {
+    width: 155px; height: 155px;
+    background: radial-gradient(circle, #FFF0A8 0%, #D4AF37 65%, #8C6812 100%);
+    border: 5px double var(--deep-maroon);
+    border-radius: 50%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative;
+    box-shadow: inset 0 0 20px rgba(255,255,255,0.7), 0 12px 30px rgba(0,0,0,0.7);
+  }
+
+  .coin-border {
+    position: absolute; width: 138px; height: 138px;
+    border: 1px dashed var(--deep-maroon); border-radius: 50%;
+  }
+
+  .calligraphy {
+    font-family: 'Cinzel', serif; font-size: 24px; font-weight: 800;
+    color: #3D1200; line-height: 1.15; text-align: center;
+  }
+
+  .unlock-text {
+    margin-top: 30px; font-family: 'Cinzel', serif; font-weight: 600;
+    font-size: 16px; color: #F5D77F; letter-spacing: 3px;
+    text-transform: uppercase; animation: pulse 1.8s infinite;
+  }
+
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+  /* Controls */
+  .top-controls {
+    position: fixed; top: 15px; left: 50%;
+    transform: translateX(-50%);
+    width: 100%; max-width: 480px;
+    padding: 0 16px;
+    display: flex; justify-content: space-between;
+    z-index: 9000; pointer-events: none;
+  }
+
+  .ctrl-btn {
+    pointer-events: auto;
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: #FFFDF9;
+    border: 2px solid var(--royal-gold);
+    color: var(--royal-crimson);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    transition: transform 0.2s;
+  }
+
+  .ctrl-btn:active { transform: scale(0.9); }
+
+  .flower-particle {
+    position: fixed; top: -40px; z-index: 9500;
+    pointer-events: none; animation: fall linear forwards;
+  }
+  @keyframes fall {
+    to { transform: translateY(105vh) rotate(360deg); }
+  }
+
+  #invitation-content { display: none; opacity: 0; transition: opacity 1s ease; }
+
+  /* Hero Section */
+  .hero-arch {
+    background: linear-gradient(180deg, #FDF6EC 0%, #F4E1C1 100%);
+    padding: 55px 20px 35px;
+    text-align: center;
+    border-bottom: 4px double var(--royal-gold);
+    position: relative;
+  }
+
+  .arch-frame {
+    border: 2px solid var(--royal-gold);
+    border-radius: 180px 180px 16px 16px;
+    padding: 40px 15px 30px;
+    background: radial-gradient(circle at top, #FFFFFF 0%, #FAF0DF 100%);
+    box-shadow: inset 0 0 20px rgba(197, 155, 39, 0.2), 0 8px 25px rgba(74, 14, 23, 0.08);
+    position: relative;
+  }
+
+  .crescent-star {
+    font-size: 32px; color: var(--royal-crimson); margin-bottom: 8px;
+  }
+
+  .bismillah-txt {
+    font-family: 'Cinzel', serif; font-size: 13px; font-weight: 800;
+    color: var(--text-dark); letter-spacing: 2px; margin-bottom: 18px;
+  }
+
+  .couple-name {
+    font-family: 'Great Vibes', cursive;
+    font-size: 60px; color: var(--text-dark);
+    line-height: 1.1; text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+  }
+
+  .weds-divider {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 22px; color: var(--text-dark); margin: 6px 0;
+    font-weight: 600;
+  }
+
+  .invite-sub {
+    font-size: 14px; color: var(--text-dark); margin-top: 16px;
+    line-height: 1.6; padding: 0 10px; font-weight: 500;
+  }
+
+  /* Date Reveal */
+  .date-reveal-section {
+    padding: 35px 20px;
+    text-align: center;
+    background: var(--cream-bg);
+  }
+
+  .reveal-hint {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 15px; color: var(--text-dark); margin-bottom: 14px; font-weight: 600;
+  }
+
+  .petal-box {
+    position: relative;
+    width: 100%; height: 120px;
+    background: #FFFDF9;
+    border: 2px solid var(--royal-gold);
+    border-radius: 14px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  }
+
+  .grand-date-text {
+    font-family: 'Cinzel', serif; font-size: 24px; font-weight: 800;
+    color: var(--text-dark); letter-spacing: 1px;
+  }
+
+  .grand-sub-text {
+    font-size: 14px; color: var(--text-dark); font-weight: 800; margin-top: 4px;
+  }
+
+  #petalCanvas {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 5; cursor: pointer; touch-action: none;
+  }
+
+  /* Countdown */
+  .countdown-wrap {
+    margin-top: 25px;
+    background: var(--deep-maroon);
+    border: 2px solid var(--royal-gold);
+    border-radius: 14px; padding: 18px 12px; color: #FFF;
+  }
+
+  .cd-title {
+    font-family: 'Cinzel', serif; font-size: 13px;
+    color: #F5D77F; letter-spacing: 2px; margin-bottom: 12px;
+  }
+
+  .timer-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+  }
+
+  .time-box {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(212,175,55,0.4);
+    border-radius: 8px; padding: 8px 4px;
+  }
+
+  .time-val { font-family: 'Cinzel', serif; font-size: 22px; font-weight: 800; color: #FFF; }
+  .time-lbl { font-size: 10px; color: #E5C97B; text-transform: uppercase; }
+
+  /* Ceremonies Parchment */
+  .ceremonies-section {
+    background-color: var(--deep-maroon);
+    padding: 45px 18px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mandala-bg {
+    position: absolute; width: 220px; height: 220px;
+    border: 2px dashed rgba(212, 175, 55, 0.25);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: spinSlow 40s linear infinite;
+  }
+  .mandala-1 { top: 60px; left: -90px; }
+  .mandala-2 { bottom: 80px; right: -90px; }
+
+  @keyframes spinSlow { 100% { transform: rotate(360deg); } }
+
+  .section-heading {
+    font-family: 'Great Vibes', cursive;
+    font-size: 44px; color: #F5D77F;
+    text-align: center; margin-bottom: 30px;
+    position: relative; z-index: 2;
+  }
+
+  .scroll-wrapper {
+    margin-bottom: 32px;
+    position: relative; z-index: 2;
+  }
+
+  .scroll-roller {
+    height: 18px;
+    background: linear-gradient(90deg, #5C3A08 0%, #D4AF37 25%, #FFF2B2 50%, #D4AF37 75%, #5C3A08 100%);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    position: relative;
+    z-index: 3;
+  }
+
+  .scroll-roller::before, .scroll-roller::after {
+    content: ''; position: absolute; top: 2px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #3D0A11; border: 2px solid #D4AF37;
+  }
+  .scroll-roller::before { left: -4px; }
+  .scroll-roller::after { right: -4px; }
+
+  .scroll-paper {
+    background: linear-gradient(180deg, #FBF2E1 0%, #F3E2C3 100%);
+    margin: 0 10px;
+    padding: 24px 16px;
+    text-align: center;
+    border-left: 2px solid #D4AF37;
+    border-right: 2px solid #D4AF37;
+    box-shadow: inset 0 0 25px rgba(140, 104, 18, 0.15);
+  }
+
+  .event-icon { font-size: 30px; margin-bottom: 6px; }
+
+  /* सभी इवेंट के नाम और जानकारी काले रंग में */
+  .event-name {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 28px; font-weight: 700; color: var(--text-dark);
+    margin-bottom: 8px;
+  }
+
+  .event-time {
+    font-family: 'Cinzel', serif; font-size: 15px; font-weight: 800;
+    color: var(--text-dark); margin-bottom: 8px;
+  }
+
+  .event-venue {
+    font-size: 14px; color: var(--text-dark); font-weight: 700;
+    margin-bottom: 10px; line-height: 1.5;
+  }
+
+  .dress-tag {
+    display: inline-block;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--text-dark);
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 12px; color: var(--text-dark); font-weight: 600;
+    margin-bottom: 14px;
+  }
+
+  .btn-row {
+    display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;
+  }
+
+  .action-btn {
+    padding: 10px 18px; border-radius: 25px;
+    font-size: 12px; font-weight: 800; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+
+  .btn-map {
+    background: var(--deep-maroon); color: #FFF;
+    border: 1px solid var(--royal-gold);
+  }
+
+  .btn-cal {
+    background: #FFF.app-wrapper -->
+  <audio id="bgAudio" loop preload="auto" playsinline>
+    <source src="https://github.com/sakinalom610-jpg/Wedding-invitation-.mp3/raw/2411741d0868cfec10b41e8af26067159f85108d/wedding_song.aac" type="audio/aac">
+  </audio>
+
+  <!-- Top Persistent Controls -->
+  <div class="top-controls">
+    <button class="ctrl-btn" id="audioCtrlBtn" onclick="toggleAudio()" title="Music">🎵</button>
+    <button class="ctrl-btn" onclick="triggerFlowerShower()" title="Shower Flowers">🌹</button>
+  </div>
+
+  <!-- Unlock Screen -->
+  <div id="unlock-screen">
+    <div class="coin-wrapper" onclick="unlockInvitation()">
+      <div class="gold-coin">
+        <div class="coin-border"></div>
+        <div class="calligraphy">الله<br>أكبر</div>
+      </div>
+    </div>
+    <div class="unlock-text">Tap to Open Invitation</div>
+  </div>
+
+  <!-- Main Invitation Content -->
+  <div id="invitation-content">
+    
+    <!-- Hero Arch Section -->
+    <div class="hero-arch">
+      <div class="arch-frame">
+        <div class="crescent-star">☪</div>
+        <div class="bismillah-txt">BISMILLAH HIR RAHMANIR RAHIM</div>
+        <div style="font-size: 12px; font-weight: 600; letter-spacing: 2px; color: var(--text-dark); margin-bottom: 10px;">TOGETHER WITH THEIR FAMILIES</div>
+        
+        <!-- एडिट करने योग्य नाम (काला रंग) -->
+        <div class="couple-name">Ijaz</div>
+        <div class="weds-divider">weds</div>
+        <div class="couple-name">Salma</div>
+
+        <p class="invite-sub">
+          Request the honour of your presence and blessings on the auspicious occasion of their wedding ceremonies.
+        </p>
+      </div>
+    </div>
+
+    <!-- Interactive Date Petal Reveal & Countdown -->
+    <div class="date-reveal-section">
+      <div class="reveal-hint">✨ Rub the petals aside to reveal the Nikah Date ✨</div>
+      <div class="petal-box">
+        <!-- एडिट करने योग्य तारीख और स्थान (काला रंग) -->
+        <div class="grand-date-text">12 JANUARY 2027</div>
+        <div class="grand-sub-text">KABAITARI, GOALPARA</div>
+        <canvas id="petalCanvas"></canvas>
+      </div>
+
+      <div class="countdown-wrap">
+        <div class="cd-title">Counting Down to Forever</div>
+        <div class="timer-grid">
+          <div class="time-box"><div class="time-val" id="days">00</div><div class="time-lbl">Days</div></div>
+          <div class="time-box"><div class="time-val" id="hours">00</div><div class="time-lbl">Hours</div></div>
+          <div class="time-box"><div class="time-val" id="minutes">00</div><div class="time-lbl">Mins</div></div>
+          <div class="time-box"><div class="time-val" id="seconds">00</div><div class="time-lbl">Secs</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ceremonies Parchment Scrolls -->
+    <div class="ceremonies-section">
+      <div class="mandala-bg mandala-1"></div>
+      <div class="mandala-bg mandala-2"></div>
+
+      <div class="section-heading">The Ceremonies</div>
+
+      <!-- MEHNDI -->
+      <div class="scroll-wrapper">
+        <div class="scroll-roller"></div>
+        <div class="scroll-paper">
+          <div class="event-icon">🌿</div>
+          <div class="event-name">Mehndi</div>
+          <div class="event-time">10 January 2027 | 11:00 AM</div>
+          <div class="event-venue">My Home, Bilasipara Ward No 7, Kabootar Khowa</div>
+          <div class="dress-tag">Dress Code: Traditional Green & Yellow</div>
+          <div class="btn-row">
+            <a href="https://maps.app.goo.gl/18XfWU9hKNHrcpxj9" class="action-btn btn-map" target="_blank">📍 Location</a>
+            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Mehndi+Ceremony+-+Ijaz+%26+Salma&dates=20270110T053000Z%2F20270110T093000Z&location=Bilasipara+Ward+No+7" class="action-btn btn-cal" target="_blank">📅 Save Date</a>
+          </div>
+        </div>
+        <div class="scroll-roller"></div>
+      </div>
+
+      <!-- HALDI -->
+      <div class="scroll-wrapper">
+        <div class="scroll-roller"></div>
+        <div class="scroll-paper">
+          <div class="event-icon">🌼</div>
+          <div class="event-name">Haldi</div>
+          <div class="event-time">11 January 2027 | 11:00 AM</div>
+          <div class="event-venue">My Home, Bilasipara Ward No 7, Kabootar Khowa</div>
+          <div class="dress-tag">Dress Code: Shades of Yellow & Gold</div>
+          <div class="btn-row">
+            <a href="https://maps.app.goo.gl/18XfWU9hKNHrcpxj9" class="action-btn btn-map" target="_blank">📍 Location</a>
+            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Haldi+Ceremony+-+Ijaz+%26+Salma&dates=20270111T053000Z%2F20270111T093000Z&location=Bilasipara+Ward+No+7" class="action-btn btn-cal" target="_blank">📅 Save Date</a>
+          </div>
+        </div>
+        <div class="scroll-roller"></div>
+      </div>
+
+      <!-- NIKAH -->
+      <div class="scroll-wrapper">
+        <div class="scroll-roller"></div>
+        <div class="scroll-paper">
+          <div class="event-icon">🕌</div>
+          <div class="event-name">Nikah</div>
+          <div class="event-time">12 January 2027 | 11:00 PM</div>
+          <div class="event-venue">Kabaitari, Goalpara</div>
+          <div class="dress-tag">Dress Code: Royal Ethnic / Sherwani & Abaya</div>
+          <div class="btn-row">
+            <a href="https://maps.app.goo.gl/18XfWU9hKNHrcpxj9" class="action-btn btn-map" target="_blank">📍 Location</a>
+            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Nikah+Ceremony+-+Ijaz+%26+Salma&dates=20270112T173000Z%2F20270112T213000Z&location=Kabaitari+Goalpara" class="action-btn btn-cal" target="_blank">📅 Save Date</a>
+          </div>
+        </div>
+        <div class="scroll-roller"></div>
+      </div>
+
+      <!-- RECEPTION -->
+      <div class="scroll-wrapper">
+        <div class="scroll-roller"></div>
+        <div class="scroll-paper">
+          <div class="event-icon">✨</div>
+          <div class="event-name">Reception</div>
+          <div class="event-time">13 January 2027 | 05:00 PM</div>
+          <div class="event-venue">My Home, Bilasipara Ward No 7, Kabootar Khowa</div>
+          <div class="dress-tag">Dress Code: Formal / Royal Festive</div>
+          <div class="btn-row">
+            <a href="https://maps.app.goo.gl/P3maTLdVFPDWd2gG7?g_st=ac" class="action-btn btn-map" target="_blank">📍 Location</a>
+            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Reception+-+Ijaz+%26+Salma&dates=20270113T113000Z%2F20270113T163000Z&location=Bilasipara+Ward+No+7" class="action-btn btn-cal" target="_blank">📅 Save Date</a>
+          </div>
+        </div>
+        <div class="scroll-roller"></div>
+      </div>
+    </div>
+
+    <!-- Polaroid Scratch Gallery -->
+    <div class="gallery-section">
+      <div class="gallery-heading">Our Moments</div>
+      <div class="gallery-sub">Scratch the gold foil to reveal our cherished memories</div>
+      
+      <div class="polaroid-grid">
+        <div class="polaroid-card">
+          <div class="photo-frame">
+            <img src="https://i.postimg.cc/g0QXXK2J/photo1.jpg" class="gallery-img" alt="Memory 1">
+            <canvas class="scratch-canvas" id="scratch1"></canvas>
+          </div>
+          <div class="polaroid-heart">♥</div>
+        </div>
+
+        <div class="polaroid-card">
+          <div class="photo-frame">
+            <img src="https://i.postimg.cc/tTFT1QcL/photo2.jpg" class="gallery-img" alt="Memory 2">
+            <canvas class="scratch-canvas" id="scratch2"></canvas>
+          </div>
+          <div class="polaroid-heart">♥</div>
+        </div>
+
+        <div class="polaroid-card">
+          <div class="photo-frame">
+            <img src="https://i.postimg.cc/XqVVpZd0/photo4.jpg" class="gallery-img" alt="Memory 3">
+            <canvas class="scratch-canvas" id="scratch3"></canvas>
+          </div>
+          <div class="polaroid-heart">♥</div>
+        </div>
+
+        <div class="polaroid-card">
+          <div class="photo-frame">
+            <img src="https://i.postimg.cc/GhXpTjMT/Screenshot-2026-11-25-12-15-43-19-1c337646f29875672b5a61192b9010f9.jpg" class="gallery-img" alt="Memory 4">
+            <canvas class="scratch-canvas" id="scratch4"></canvas>
+          </div>
+          <div class="polaroid-heart">♥</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Blessing Card -->
+    <div class="footer-blessing">
+      <div class="easel-card">
+        <div class="blessing-quote">“Your presence and prayers mean the world to us”</div>
+        <div class="from-label">With Warm Regards</div>
+        <!-- एडिट करने योग्य मेज़बान का नाम (काला रंग) -->
+        <div class="host-name">Family of Ijaz & Salma</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const audio = document.getElementById('bgAudio');
+  const audioBtn = document.getElementById('audioCtrlBtn');
+
+  function unlockInvitation() {
+    audio.play().then(() => {
+      audioBtn.innerText = "🎵";
+    }).catch(err => {
+      console.log("Audio play error:", err);
+      audioBtn.innerText = "🔇";
+    });
+
+    const unlockScreen = document.getElementById('unlock-screen');
+    const content = document.getElementById('invitation-content');
+    
+    unlockScreen.style.opacity = '0';
+    setTimeout(() => {
+      unlockScreen.style.display = 'none';
+      content.style.display = 'block';
+      
+      initPetalScratch();
+      initScratchCard('scratch1');
+      initScratchCard('scratch2');
+      initScratchCard('scratch3');
+      initScratchCard('scratch4');
+      
+      setTimeout(() => {
+        content.style.opacity = '1';
+        triggerFlowerShower();
+      }, 50);
+    }, 800);
+  }
+
+  function toggleAudio() {
+    if (audio.paused) {
+      audio.play().then(() => { audioBtn.innerText = "🎵"; });
+    } else {
+      audio.pause();
+      audioBtn.innerText = "🔇";
+    }
+  }
+
+  function triggerFlowerShower() {
+    const flowers = ['🌹', '🌸', '🌺', '🌼', '✨'];
+    for (let i = 0; i < 30; i++) {
+      const el = document.createElement('div');
+      el.innerText = flowers[Math.floor(Math.random() * flowers.length)];
+      el.className = 'flower-particle';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.animationDuration = (Math.random() * 2.5 + 2.5) + 's';
+      el.style.fontSize = (Math.random() * 16 + 16) + 'px';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 5000);
+    }
+  }
+
+  const targetDate = new Date("January 10, 2027 11:00:00").getTime();
+  function updateTimer() {
+    const now = new Date().getTime();
+    const diff = targetDate - now;
+    if (diff <= 0) return;
+
+    document.getElementById('days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+    document.getElementById('hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+    document.getElementById('minutes').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+    document.getElementById('seconds').innerText = String(Math.floor((diff % (1000 * 60)) / 1000))).padStart(2, '0');
+  }
+  setInterval(updateTimer, 1000);
+  updateTimer();
+
+  function initPetalScratch() {
+    const canvas = document.getElementById('petalCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    ctx.fillStyle = '#F5E6CC';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const petalColors = ['#B71C1C', '#E53935', '#FBC02D', '#F8BBD0', '#880E4F'];
+    for (let i = 0; i < 140; i++) {
+      ctx.fillStyle = petalColors[Math.floor(Math.random() * petalColors.length)];
+      ctx.beginPath();
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height;
+      ctx.ellipse(x, y, 12, 7, Math.random() * Math.PI, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    attachScratchEvents(canvas, ctx, 28);
+  }
+
+  function initScratchCard(id) {
+    const canvas = document.getElementById(id);
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    grad.addColorStop(0, '#D4AF37');
+    grad.addColorStop(0.5, '#F5D77F');
+    grad.addColorStop(1, '#AA771C');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#4A0E17';
+    ctx.font = '600 13px Cinzel, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('SCRATCH HERE', canvas.width / 2, canvas.height / 2);
+
+    attachScratchEvents(canvas, ctx, 22);
+  }
+
+  function attachScratchEvents(canvas, ctx, radius) {
+    let drawing = false;
+    function scratch(e) {
+      if (!drawing) return;
+      if (e.cancelable) e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.arc(clientX - rect.left, clientY - rect.top, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    canvas.addEventListener('mousedown', (e) => { drawing = true; scratch(e); });
+    canvas.addEventListener('mousemove', scratch);
+    window.addEventListener('mouseup', () => drawing = false);
+    canvas.addEventListener('touchstart', (e) => { drawing = true; scratch(e); }, { passive: false });
+    canvas.addEventListener('touchmove', scratch, { passive: false });
+    window.addEventListener('touchend', () => drawing = false);
+  }
+</script>
+</body>
+</html>
